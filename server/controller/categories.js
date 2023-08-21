@@ -1,6 +1,6 @@
-const { toTitleCase } = require("../config/function");
-const categoryModel = require("../models/categories");
-const fs = require("fs");
+const { toTitleCase } = require('../config/function');
+const categoryModel = require('../models/categories');
+const fs = require('fs');
 
 class Category {
   async getAllCategory(req, res) {
@@ -24,7 +24,7 @@ class Category {
         if (err) {
           console.log(err);
         }
-        return res.json({ error: "All filled must be required" });
+        return res.json({ error: 'All filled must be required' });
       });
     } else {
       cName = toTitleCase(cName);
@@ -35,7 +35,7 @@ class Category {
             if (err) {
               console.log(err);
             }
-            return res.json({ error: "Category already exists" });
+            return res.json({ error: 'Category already exists' });
           });
         } else {
           let newCategory = new categoryModel({
@@ -44,11 +44,8 @@ class Category {
             cStatus,
             cImage,
           });
-          await newCategory.save((err) => {
-            if (!err) {
-              return res.json({ success: "Category created successfully" });
-            }
-          });
+          await newCategory.save();
+          return res.json({ success: 'Category created successfully' });
         }
       } catch (err) {
         console.log(err);
@@ -59,7 +56,7 @@ class Category {
   async postEditCategory(req, res) {
     let { cId, cDescription, cStatus } = req.body;
     if (!cId || !cDescription || !cStatus) {
-      return res.json({ error: "All filled must be required" });
+      return res.json({ error: 'All filled must be required' });
     }
     try {
       let editCategory = categoryModel.findByIdAndUpdate(cId, {
@@ -69,7 +66,7 @@ class Category {
       });
       let edit = await editCategory.exec();
       if (edit) {
-        return res.json({ success: "Category edit successfully" });
+        return res.json({ success: 'Category edit successfully' });
       }
     } catch (err) {
       console.log(err);
@@ -79,7 +76,7 @@ class Category {
   async getDeleteCategory(req, res) {
     let { cId } = req.body;
     if (!cId) {
-      return res.json({ error: "All filled must be required" });
+      return res.json({ error: 'All filled must be required' });
     } else {
       try {
         let deletedCategoryFile = await categoryModel.findById(cId);
@@ -87,12 +84,12 @@ class Category {
 
         let deleteCategory = await categoryModel.findByIdAndDelete(cId);
         if (deleteCategory) {
-          // Delete Image from uploads -> categories folder 
+          // Delete Image from uploads -> categories folder
           fs.unlink(filePath, (err) => {
             if (err) {
               console.log(err);
             }
-            return res.json({ success: "Category deleted successfully" });
+            return res.json({ success: 'Category deleted successfully' });
           });
         }
       } catch (err) {

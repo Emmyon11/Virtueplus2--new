@@ -32,6 +32,7 @@ const brainTreeRouter = require('./routes/braintree');
 const orderRouter = require('./routes/orders');
 const usersRouter = require('./routes/users');
 const customizeRouter = require('./routes/customize');
+const feedbackRouter = require('./routes/feedback');
 const connectDB = require('./db/connect');
 // Import Auth middleware for check user login or not~
 const { loginCheck } = require('./middleware/auth');
@@ -56,6 +57,7 @@ app.use('/api/product', productRouter);
 app.use('/api', brainTreeRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/customize', customizeRouter);
+app.use('/api/feedback', feedbackRouter);
 
 // Run Server
 const port = process.env.PORT || 5000;
